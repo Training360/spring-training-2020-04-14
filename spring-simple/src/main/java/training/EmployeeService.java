@@ -9,6 +9,12 @@ public class EmployeeService {
     }
 
     public void saveEmployee(String name) {
-        employeeDao.saveEmployee(name);
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name can not be empty");
+        }
+        var upperCase = name.toUpperCase();
+//        var upperCase = name;
+//        employeeDao.getEmployees();
+        employeeDao.saveEmployee(upperCase);
     }
 }
