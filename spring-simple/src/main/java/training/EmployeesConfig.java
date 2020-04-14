@@ -8,6 +8,7 @@ public class EmployeesConfig {
 
     @Bean
     public EmployeeDao employeeDao() {
+        System.out.println("Create employee dao");
         return new EmployeeDao();
     }
 
