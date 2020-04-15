@@ -34,8 +34,9 @@ public class EmployeeServiceIT {
 //    @DirtiesContext
     public void testSave() {
         service.saveEmployee("John Doe");
+        service.saveEmployee("Jack Doe");
         List<String> names = dao.getEmployees();
-        assertEquals(List.of("JOHN DOE"), names);
+        assertEquals(List.of("JOHN DOE", "JACK DOE"), names);
     }
 
 //    @Test

@@ -1,7 +1,7 @@
 package training;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,9 +13,12 @@ public class EmployeeService {
 
     private final ApplicationContext applicationContext;
 
-    public EmployeeService(EmployeeDao employeeDao, ApplicationContext applicationContext) {
+    private final ApplicationEventPublisher publisher;
+
+    public EmployeeService(EmployeeDao employeeDao, ApplicationContext applicationContext, ApplicationEventPublisher publisher) {
         this.employeeDao = employeeDao;
         this.applicationContext = applicationContext;
+        this.publisher = publisher;
     }
 
     @PostConstruct
@@ -31,6 +34,8 @@ public class EmployeeService {
 //        var upperCase = name;
 //        employeeDao.getEmployees();
         employeeDao.saveEmployee(upperCase);
+
+        publisher.publishEvent(new EmployeeHasCreatedEvent(this, name));
     }
 
     public Employee createDefaultEmployee() {
