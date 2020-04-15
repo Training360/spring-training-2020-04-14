@@ -33,7 +33,7 @@ public class EmployeeServiceIT {
     @Test
 //    @DirtiesContext
     public void testSave() {
-        service.saveEmployee("John Doe");
+        service.saveEmployee("John Doe admin ");
         service.saveEmployee("Jack Doe");
         List<String> names = dao.getEmployees();
         assertEquals(List.of("JOHN DOE", "JACK DOE"), names);

@@ -14,6 +14,13 @@ public class EmployeeDao {
     public void saveEmployee(String name) {
         System.out.println("Save employee");
         employees.add(name);
+
+        try {
+            Thread.sleep(1300);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<String> getEmployees() {
