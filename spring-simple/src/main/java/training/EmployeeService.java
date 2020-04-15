@@ -1,5 +1,6 @@
 package training;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,15 @@ public class EmployeeService {
 
     private final ApplicationEventPublisher publisher;
 
-    public EmployeeService(EmployeeDao employeeDao, ApplicationContext applicationContext, ApplicationEventPublisher publisher) {
+//    private final Environment env;
+
+    private final boolean uppercaseEnabled;
+
+    public EmployeeService(EmployeeDao employeeDao, ApplicationContext applicationContext, ApplicationEventPublisher publisher, @Value("${uppercase.enabled}") boolean uppercaseEnabled) {
         this.employeeDao = employeeDao;
         this.applicationContext = applicationContext;
         this.publisher = publisher;
+        this.uppercaseEnabled = uppercaseEnabled;
     }
 
     @PostConstruct
@@ -30,10 +36,19 @@ public class EmployeeService {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name can not be empty");
         }
-        var upperCase = name.toUpperCase();
+
+        String changedName;
+//        if (Boolean.parseBoolean(env.getProperty("uppercase.enabled"))) {
+        if (uppercaseEnabled) {
+            changedName = name.toUpperCase();
+        }
+        else {
+            changedName = name;
+        }
+
 //        var upperCase = name;
 //        employeeDao.getEmployees();
-        employeeDao.saveEmployee(upperCase);
+        employeeDao.saveEmployee(changedName);
 
         publisher.publishEvent(new EmployeeHasCreatedEvent(this, name));
     }
