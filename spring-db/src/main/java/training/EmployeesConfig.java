@@ -1,6 +1,7 @@
 package training;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,4 +23,11 @@ public class EmployeesConfig {
         return dataSource;
     }
 
+    @Bean
+    public Flyway flyway() {
+        Flyway flyway = Flyway.configure()
+                .dataSource(dataSource()).load();
+        flyway.migrate();
+        return flyway;
+    }
 }
